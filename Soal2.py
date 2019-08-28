@@ -1,87 +1,58 @@
-import plotly.graph_objects as go
-import matplotlib.pyplot as plt
-import mysql.connector
+import sqlalchemy
 import pandas as pd
+import matplotlib.pyplot as plt
+import numpy as np
 
-db = mysql.connector.connect(
-    host = 'localhost',
-    port = 3306,
-    user = 'root',
-    passwd = 'nugroho21',
-    database = 'world'
+conn = sqlalchemy.create_engine(
+    'mysql+pymysql://root:nugroho21@localhost:3306/world'
 )
+query="select * from country where region = 'Southeast Asia' order by name"
+df = pd.read_sql_query(query, conn)
 
 
-query1 = '''select country.Name as Negara_ASEAN, country.Population as Populasi_Negara, GNP, city.Name as IbuKota, city.Population as Populasi_Ibukota from country inner join city
-on country.Capital = city.ID where country.Name = 'Brunei' or country.Name ='Cambodia' or country.Name ='East Timor' or country.Name ='Indonesia' or country.Name ='Laos' or country.Name ='Malaysia' or country.Name ='Myanmar' or country.Name ='Philippines'or country.Name ='Singapore' or country.Name ='Thailand' or country.Name ='Vietnam' order by country.Name asc'''
-
-df = pd.read_sql(query1, con=db)
-negara = list(df['Negara_ASEAN'])
-populasi = list(df['Populasi_Negara'])
-gnp= list(df['GNP'])
-
-x= negara
-y1= populasi
-y2= gnp
-
-##-------------- Nomor 1 ------------
+#1. Populasi Negara ASEAN ====================================================
 # plt.style.use('seaborn')
-# for a,b in zip(x,y1):
-#     plt.text(a,b, str(b), ha='center', size=6)
-# plt.bar(x,y1,color=['red','green','black','yellow','blue','lightblue','lightgreen','pink','magenta','purple','orange'])
-# plt.title('Populasi Negara ASEAN')
+# plt.bar(list(df['Name']), list(df['Population']), color=['blue', 'orange', 'green', 'red', 'purple', 'brown', 'pink', 'grey', 'gold', 'cyan', 'blue'])
+# plt.xticks(rotation=45)
+# plt.title('Populasi Negara ASEAN', fontdict={'fontsize':'24'})
 # plt.xlabel('Negara')
-# plt.ylabel('Populasi')
-# plt.xticks(rotation=45, size=6)
-# plt.grid(True)
+# plt.ylabel('Populasi(x 100 juta jiwa)')
+# xlocs = plt.xticks()
+# plt.subplots_adjust(bottom=0.16)
+
+# for x, y in zip (xlocs[0],(list(df['Population']))):
+#     plt.text(x - 0.30, y + 1000000, str(y))
 # plt.show()
 
-##-------------- Nomor 2 ------------
-# plt.style.use('seaborn')
-# color = ['red','blue','green','yellow','lightgreen','lightblue','pink','purple','brown','lightgrey','orange']
-# plt.pie(
-#     y1, labels=x, colors=color,
-#     startangle=360, counterclock=True,
-#     autopct='%1.1f%%',
-#     textprops={'color':'black'}
-# )
-# plt.title('Presentase Penduduk Asean')
+
+
+#2. Persentase Populasi ASEAN ===================================================
+# wedges, texts, autotexts = plt.pie(list(df['Population']), labels=list(df['Name']), autopct='%1f%%')
+# plt.title('Persentase Negara ASEAN', fontdict={'fontsize':'22'})
+# for autotext in autotexts:
+#     autotext.set_color('black')
 # plt.show()
 
-##-------------- Nomor 3 ------------
+
+#3. Pendapatan Bruto Nasional ASEAN ==============================================
 # plt.style.use('seaborn')
-# for a,b in zip(x,y2):
-#     plt.text(a,b, str(b), ha='center', size=6)
-# plt.bar(x,y2,color=['red','green','black','yellow','blue','lightblue','lightgreen','pink','magenta','purple','orange'])
-# plt.title('Pendapatan Bruto ASEAN')
+# plt.bar(list(df['Name']), list(df['GNP']), color=['blue', 'orange', 'green', 'red', 'purple', 'brown', 'pink', 'grey', 'gold', 'cyan', 'blue'])
+# plt.xticks(rotation=45)
+# plt.title('Pendapatan Bruto Nasional ASEAN', fontdict={'fontsize':'24'})
 # plt.xlabel('Negara')
-# plt.ylabel('Populasi')
-# plt.xticks(rotation=45, size=6)
-# plt.grid(True)
+# plt.ylabel('Gross National Product (US$)')
+# xlocs = plt.xticks()
+# plt.subplots_adjust(bottom=0.16)
+
+# for x, y in zip (xlocs[0],(list(df['GNP']))):
+#     plt.text(x - 0.25, y + 2000, str(y))
 # plt.show()
 
 
-##--------------- Nomor 4 -------------
-query2 = """
-SELECT Name as Negara_ASEAN, surfacearea as Luas_Daratan
-FROM country
-WHERE Name in ('Brunei', 'Cambodia', 'East Timor', 'Indonesia', 'Laos', 'Malaysia', 'Myanmar', 'Philippines', 'Singapore', 'Thailand', 'Vietnam')
-ORDER BY Negara_ASEAN ASC;
-"""
 
-df = pd.read_sql(query2, con=db)
-
-# ===PLOT
-
-x = list(df['Negara_ASEAN'])
-y = list(df['Luas_Daratan'])
-
-warna = ['red', 'orange', 'green', 'red', 'purple', 'brown', 'pink', 'grey', 'gold', 'lightblue', 'blue']
-_,_,autotexts = plt.pie(y, labels=x, colors=warna,
-    autopct = '%1f%%',
-    textprops={'color':'black'})
-for autotext in autotexts:
-    autotext.set_color('white')
-    autotext.set_size(6)
-plt.title('Persentase Luas Daratan ASEAN')
-plt.show()
+#4. Persentase Luas Daratan ASEAN ==============================================
+# wedges, texts, autotexts = plt.pie(list(df['SurfaceArea']), labels=list(df['Name']), autopct='%1.1f%%')
+# plt.title('Persentase Luas Daratan ASEAN', fontdict={'fontsize':'22'})
+# for autotext in autotexts:
+#     autotext.set_color('black')
+# plt.show()
