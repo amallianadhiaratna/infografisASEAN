@@ -10,7 +10,7 @@ query="select * from country where region = 'Southeast Asia' order by name"
 df = pd.read_sql_query(query, conn)
 
 
-#1. Populasi Negara ASEAN ====================================================
+#----------------------- Nomor 1 -----------------------
 # plt.style.use('seaborn')
 # plt.bar(list(df['Name']), list(df['Population']), color=['blue', 'orange', 'green', 'red', 'purple', 'brown', 'pink', 'grey', 'gold', 'cyan', 'blue'])
 # plt.xticks(rotation=45)
@@ -22,19 +22,18 @@ df = pd.read_sql_query(query, conn)
 
 # for x, y in zip (xlocs[0],(list(df['Population']))):
 #     plt.text(x - 0.30, y + 1000000, str(y))
+
 # plt.show()
 
-
-
-#2. Persentase Populasi ASEAN ===================================================
+#----------------------- Nomor 2 -----------------------
 # wedges, texts, autotexts = plt.pie(list(df['Population']), labels=list(df['Name']), autopct='%1f%%')
 # plt.title('Persentase Negara ASEAN', fontdict={'fontsize':'22'})
 # for autotext in autotexts:
 #     autotext.set_color('black')
+
 # plt.show()
 
-
-#3. Pendapatan Bruto Nasional ASEAN ==============================================
+#----------------------- Nomor 3 -----------------------
 # plt.style.use('seaborn')
 # plt.bar(list(df['Name']), list(df['GNP']), color=['blue', 'orange', 'green', 'red', 'purple', 'brown', 'pink', 'grey', 'gold', 'cyan', 'blue'])
 # plt.xticks(rotation=45)
@@ -46,13 +45,13 @@ df = pd.read_sql_query(query, conn)
 
 # for x, y in zip (xlocs[0],(list(df['GNP']))):
 #     plt.text(x - 0.25, y + 2000, str(y))
+
 # plt.show()
 
-
-
-#4. Persentase Luas Daratan ASEAN ==============================================
+#----------------------- Nomor 4 -----------------------
 # wedges, texts, autotexts = plt.pie(list(df['SurfaceArea']), labels=list(df['Name']), autopct='%1.1f%%')
 # plt.title('Persentase Luas Daratan ASEAN', fontdict={'fontsize':'22'})
 # for autotext in autotexts:
 #     autotext.set_color('black')
+
 # plt.show()
